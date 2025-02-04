@@ -1,6 +1,6 @@
-echo "# My Auth App 🔐
+# Auth App 🔐
 
-**My Auth App** is a full-stack authentication system that provides secure user authentication with features like email OTP verification, password reset, and protected routes. It is built using **Node.js, Express.js, MongoDB**, and **React.js**.
+**Auth App** is a full-stack authentication system that provides secure user authentication with features like email OTP verification, password reset, and protected routes. It is built using **Node.js, Express.js, MongoDB**, and **React.js**.
 
 ## 🚀 Features
 
@@ -21,18 +21,18 @@ echo "# My Auth App 🔐
 
 ## 📂 Project Structure
 
-\`\`\`
+```bash
 /my-auth-app
 │── /frontend  # React.js UI  
 │── /backend   # Node.js API   
 │── README.md  
-\`\`\`
+```
 
 ## 🔧 Installation & Setup
 
 Clone the repository and install dependencies for both frontend and backend:
 
-\`\`\`sh
+```shell
 git clone https://github.com/your-username/my-auth-app.git  
 cd my-auth-app  
 
@@ -43,18 +43,18 @@ npm install
 # Install backend dependencies  
 cd ../backend  
 npm install  
-\`\`\`
+```
 
 ### 🔑 Environment Variables
 
-Create a \`.env\` file in the backend directory and configure necessary environment variables, such as:
+Create a `.env` file in the backend directory and configure necessary environment variables, such as:
 
-\`\`\`env
+```env
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 EMAIL_USER=your_email_address
 EMAIL_PASS=your_email_password
-\`\`\`
+```
 
 ## 🔄 API Endpoints
 
@@ -95,7 +95,4 @@ EMAIL_PASS=your_email_password
 - 🔄 Implementing Forgot Password
 - 🚀 Super Detailed Deployment
 
-## 📜 License
-
-This project is open-source and available under the MIT License.
-" > README.md
+![Demo App]
