@@ -14,12 +14,6 @@ const PORT = process.env.PORT || 8000;
 connectDB();
 
 const allowedOrigins = [
-    'http://localhost:5173',
-    'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app',
-    'https://auth-lfusdffrd-sudhir-singhs-projects-6e01bfb3.vercel.app' // Add the correct frontend URL
-];
-
-const allowedOrigins = [
     'http://localhost:5173', 
     'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app', 
     'https://auth-app-git-main-sudhir-singhs-projects-6e01bfb3.vercel.app'
