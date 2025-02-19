@@ -19,25 +19,18 @@ const allowedOrigins = [
     'https://auth-lfusdffrd-sudhir-singhs-projects-6e01bfb3.vercel.app' // Add the correct frontend URL
 ];
 
-// app.use(cors({
-//     origin: function (origin, callback) {
-//         if (!origin || allowedOrigins.includes(origin)) {
-//             callback(null, true);
-//         } else {
-//             callback(new Error('Not allowed by CORS'));
-//         }
-//     },
-//     credentials: true,
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-//     allowedHeaders: ['Content-Type', 'Authorization']
-// }));
+const allowedOrigins = [
+    'http://localhost:5173', 
+    'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app', 
+    'https://auth-app-git-main-sudhir-singhs-projects-6e01bfb3.vercel.app'
+];
 
 app.use(cors({
-    origin: '*',
-    credentials: true
+    origin: allowedOrigins, // Remove '*'
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
-
 
 // Test route
 app.get('/', (req, res) => {
