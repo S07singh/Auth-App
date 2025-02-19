@@ -12,15 +12,21 @@ export const AppContextProvider = (props) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [userData, setUserData] = useState(false);
 
-  const getAuthState = async () => {
+  const checkAuth = async () => {
     try {
+      axios.defaults.withCredentials = true;
       const { data } = await axios.get(backendUrl + "/api/auth/is-auth");
       if (data.success) {
         setIsLoggedin(true);
-        getUserData();
+        setUserData(data.user);
+      } else {
+        setIsLoggedin(false);
+        setUserData(null);
       }
     } catch (error) {
-      toast.error(error.message);
+      setIsLoggedin(false);
+      setUserData(null);
+      console.log("Not authenticated");
     }
   };
 
@@ -34,7 +40,7 @@ export const AppContextProvider = (props) => {
   };
 
   useEffect(() => {
-    getAuthState();
+    checkAuth();
   }, []);
 
   const value = {

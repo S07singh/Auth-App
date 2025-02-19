@@ -5,6 +5,7 @@ import axios from "axios";
 import { AppContent } from "../context/AppContext";
 import { toast } from "react-toastify";
 
+
 const EmailVerify = () => {
   axios.defaults.withCredentials = true;
   const {backendUrl, isLoggedin, userData, getUserData} = useContext(AppContent);
@@ -57,43 +58,45 @@ const EmailVerify = () => {
   }, [isLoggedin, userData]);
   
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-200 to-purple-400">
-      <img
-        onClick={() => navigate("/")}
-        src={assets.logo}
-        alt=""
-        className="absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer"
-      />
-      <form
-        onSubmit={onSubmitHandler}
-        className="bg-slate-900 p-8 rounded-lg shadow-lg w-96 text-sm"
-      >
-        <h1 className="text-white text-2x1 font-semibold text-center mb-4">
-          Email Verify OTP
-        </h1>
-        <p className="text-center mb-6 text-indigo-300">
-          Please enter the OTP sent to your email
-        </p>
-        <div className="flex justify-between mb-8" onPaste={handlePaste}>
-          {Array(6)
-            .fill(0)
-            .map((_, index) => (
+    <div className="flex items-center justify-center min-h-screen auth-gradient px-4">
+      <div className="container max-w-md mx-auto relative">
+        <img
+          onClick={() => navigate("/")}
+          src={assets.logo}
+          alt=""
+          className="absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer"
+        />
+        
+        <form onSubmit={onSubmitHandler} className="glass-card p-8 rounded-2xl shadow-xl w-full mt-20">
+          <h1 className="text-2xl font-semibold text-white text-center mb-6">
+            Email Verify OTP
+          </h1>
+          <p className="text-center mb-8 text-gray-300">
+            Please enter the OTP sent to your email
+          </p>
+          
+          <div className="flex justify-between gap-2 mb-8" onPaste={handlePaste}>
+            {Array(6).fill(0).map((_, index) => (
               <input
+                key={index}
                 type="text"
                 maxLength="1"
-                key={index}
                 required
-                className="w-12 h-12 bg-[#333A5C] text-white text-center text-xl rounded-md"
+                className="w-12 h-12 text-center text-xl font-bold rounded-xl 
+                  bg-white bg-opacity-5 border border-gray-200 border-opacity-20 
+                  focus:ring-2 focus:ring-indigo-500 transition-all outline-none text-white"
                 ref={(e) => (inputRefs.current[index] = e)}
                 onInput={(e) => handleInput(e, index)}
                 onKeyDown={(e) => handleKeydown(e, index)}
               />
             ))}
-        </div>
-        <button className="w-full bg-gradient-to-r from-indigo-500 to-indigo-900 py-2.5 rounded-full text-white ">
-          Verify
-        </button>
-      </form>
+          </div>
+          
+          <button type="submit" className="primary-button w-full">
+            Verify
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
