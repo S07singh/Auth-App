@@ -15,18 +15,23 @@ connectDB();
 
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app'
+    'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app',
+    'https://auth-lfusdffrd-sudhir-singhs-projects-6e01bfb3.vercel.app' // Add the correct frontend URL
 ];
 
-// Middlewares
-app.use(express.json());
-app.use(cookieParser());
 app.use(cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 
 // Test route
 app.get('/', (req, res) => {
