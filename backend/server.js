@@ -14,7 +14,8 @@ connectB();
 
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://your-frontend-domain.vercel.app'  // Add your frontend Vercel domain
+    'https://auth-app-git-main-sudhir-singhs-projects-6e01bfb3.vercel.app',
+    'https://auth-app-7xql-sudhir-singhs-projects-6e01bfb3.vercel.app'
 ];
 
 app.use(express.json());
