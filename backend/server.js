@@ -12,11 +12,18 @@ const port = process.env.PORT || 5000;
 connectB();
 
 
-const allowedOrigins = ['http://localhost:5173']
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://your-frontend-domain.vercel.app'  // Add your frontend Vercel domain
+];
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin: allowedOrigins, credentials: true}));
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
+}));
 
 // api endpoints
 app.get('/', (req, res) => {
