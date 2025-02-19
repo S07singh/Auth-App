@@ -14,8 +14,7 @@ connectB();
 
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://auth-app-git-main-sudhir-singhs-projects-6e01bfb3.vercel.app',
-    'https://auth-app-7xql-sudhir-singhs-projects-6e01bfb3.vercel.app'
+    'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app'
 ];
 
 app.use(express.json());
@@ -23,8 +22,12 @@ app.use(cookieParser());
 app.use(cors({
     origin: allowedOrigins,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+
+// Add this before your routes
+app.options('*', cors());
 
 // api endpoints
 app.get('/', (req, res) => {
