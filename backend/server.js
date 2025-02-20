@@ -16,13 +16,24 @@ connectDB();
 const allowedOrigins = [
     'http://localhost:5173',
     'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app',
-    'https://auth-lfusdffrd-sudhir-singhs-projects-6e01bfb3.vercel.app'
+    /^https:\/\/auth-.*-sudhir-singhs-projects-6e01bfb3\.vercel\.app$/ // This regex will match all preview deployments
 ];
 
 // CORS Middleware
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        // Check if origin is allowed
+        const allowed = allowedOrigins.some(allowedOrigin => {
+            if (allowedOrigin instanceof RegExp) {
+                return allowedOrigin.test(origin);
+            }
+            return allowedOrigin === origin;
+        });
+        
+        if (allowed) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
