@@ -15,26 +15,10 @@ connectDB();
 // Environment-based CORS configuration
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Allow specific origins in production, or all origins in development
-const allowedOrigins = isProduction
-  ? ['https://auth-app-git-main-sudhir-singhs-projects-6e01bfb3.vercel.app'] // Add your frontend URL(s) here
-  : ['http://localhost:3000']; // Allow localhost for development
-
-// CORS configuration
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true, // Allow credentials (cookies, authorization headers)
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-  })
-);
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
 
 // Debugging middleware to log incoming requests
 app.use((req, res, next) => {
