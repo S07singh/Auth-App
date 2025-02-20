@@ -20,14 +20,6 @@ app.use(cors({
   credentials: true
 }));
 
-// Debugging middleware to log incoming requests
-app.use((req, res, next) => {
-  console.log(`Request from origin: ${req.headers.origin}`);
-  console.log(`Request method: ${req.method}`);
-  console.log(`Request path: ${req.path}`);
-  next();
-});
-
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
