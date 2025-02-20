@@ -2,30 +2,28 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
-
 import connectDB from './config/mongodb.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
-
 const app = express();
 const PORT = process.env.PORT || 8000;
-
 // Connect to MongoDB
 connectDB();
 
+// Define allowed origins - including patterns
 const allowedOrigins = [
     'http://localhost:5173',
     'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app',
-    /^https:\/\/auth-.*-sudhir-singhs-projects-6e01bfb3\.vercel\.app$/ // This regex will match all preview deployments
+    /^https:\/\/auth-.*\.vercel\.app$/ // This matches any auth-* on vercel.app
 ];
 
-// CORS Middleware
+// CORS Middleware with improved pattern matching
 app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         
-        // Check if origin is allowed
+        // Check if origin matches any allowed origin (string or regex)
         const allowed = allowedOrigins.some(allowedOrigin => {
             if (allowedOrigin instanceof RegExp) {
                 return allowedOrigin.test(origin);
@@ -36,6 +34,7 @@ app.use(cors({
         if (allowed) {
             callback(null, true);
         } else {
+            console.log(`Blocked origin: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
