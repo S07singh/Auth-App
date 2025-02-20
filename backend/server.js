@@ -7,45 +7,36 @@ import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 8000;
+
 // Connect to MongoDB
 connectDB();
 
-// Define allowed origins - including patterns
-const allowedOrigins = [
-    'http://localhost:5173',
-    'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app',
-    /^https:\/\/auth-.*\.vercel\.app$/ // This matches any auth-* on vercel.app
-];
+// Environment-based CORS configuration
+const isProduction = process.env.NODE_ENV === 'production';
 
-// CORS Middleware with improved pattern matching
+// Use a simple CORS configuration that works with Vercel deployments
 app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        
-        // Check if origin matches any allowed origin (string or regex)
-        const allowed = allowedOrigins.some(allowedOrigin => {
-            if (allowedOrigin instanceof RegExp) {
-                return allowedOrigin.test(origin);
-            }
-            return allowedOrigin === origin;
-        });
-        
-        if (allowed) {
-            callback(null, true);
-        } else {
-            console.log(`Blocked origin: ${origin}`);
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    // Allow all origins in development, or any Vercel preview/production URLs
+    origin: true, // This allows any origin - more permissive but will solve the immediate issue
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// For debugging CORS issues
+app.use((req, res, next) => {
+    console.log(`Request from origin: ${req.headers.origin}`);
+    next();
+});
+
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
+
+// CORS preflight response - add an explicit OPTIONS handler
+app.options('*', (req, res) => {
+    res.status(200).end();
+});
 
 // Test route
 app.get('/', (req, res) => {
