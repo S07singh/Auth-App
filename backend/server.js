@@ -14,17 +14,28 @@ const PORT = process.env.PORT || 8000;
 connectDB();
 
 const allowedOrigins = [
-    'http://localhost:5173', 
-    'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app', 
-    'https://auth-app-git-main-sudhir-singhs-projects-6e01bfb3.vercel.app'
+    'http://localhost:5173',
+    'https://auth-app-sudhir-singhs-projects-6e01bfb3.vercel.app',
+    'https://auth-lfusdffrd-sudhir-singhs-projects-6e01bfb3.vercel.app'
 ];
 
+// CORS Middleware
 app.use(cors({
-    origin: allowedOrigins, // Remove '*'
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Middlewares
+app.use(express.json());
+app.use(cookieParser());
 
 // Test route
 app.get('/', (req, res) => {
@@ -51,4 +62,3 @@ app.listen(PORT, () => {
 });
 
 export default app;
-
