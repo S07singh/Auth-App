@@ -15,13 +15,14 @@ connectDB();
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Use a simple CORS configuration that works with Vercel deployments
-app.use(cors({
-    // Allow all origins in development, or any Vercel preview/production URLs
-    origin: true, // This allows any origin - more permissive but will solve the immediate issue
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// app.use(cors({
+//     // Allow all origins in development, or any Vercel preview/production URLs
+//     origin: true, // This allows any origin - more permissive but will solve the immediate issue
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+app.use(cors({credentials : true}));
 
 // For debugging CORS issues
 app.use((req, res, next) => {
