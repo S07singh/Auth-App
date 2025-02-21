@@ -14,22 +14,15 @@ export const AppContextProvider = (props) => {
     const checkAuth = async () => {
         try {
             const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                withCredentials: true
+                
             });
             if (data.success) {
                 setIsLoggedin(true);
-                setUserData(data.user);
-            } else {
-                setIsLoggedin(false);
-                setUserData(null);
+                getUserData();
             }
         } catch (error) {
-            setIsLoggedin(false);
-            setUserData(null);
-            console.log("Not authenticated");
+            toast.error(error.message);
         }
     };
 
