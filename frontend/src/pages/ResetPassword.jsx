@@ -59,15 +59,30 @@ const ResetPassword = () => {
 
   const onSubmitNewPassword = async (e) => {
     e.preventDefault();
-    try {
-      const {data} = await axios.post(backendUrl + '/api/auth/reset-password', {email,otp, newPassword})
-      data.success ? toast.success(data.message) : toast.error(data.message);
-      data.success && navigate('/login');
-    } catch (error) {
-      toast.error(error.message); 
+  
+    if (!email || !otp || !newPassword) {
+      toast.error("Missing required fields.");
+      return;
     }
-
-  }
+  
+    try {
+      const { data } = await axios.post(backendUrl + "/api/auth/reset-password", {
+        email,
+        otp,
+        newPassword,
+      });
+  
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/login");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong.");
+    }
+  };
+  
   return (
     <div className="flex items-center justify-center min-h-screen auth-gradient px-4">
       <div className="container max-w-md mx-auto relative">
