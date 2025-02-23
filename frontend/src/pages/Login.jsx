@@ -16,43 +16,42 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const onSubmitHandler = async (e) => {
-    try {
-      e.preventDefault();
+  e.preventDefault();
+  try {
+    axios.defaults.withCredentials = true;
 
-      axios.defaults.withCredentials = true;
+    let response;
+    if (state === "Sign Up") {
+      response = await axios.post(backendUrl + "/api/auth/register", {
+        name,
+        email,
+        password,
+      });
+    } else {
+      response = await axios.post(backendUrl + "/api/auth/login", {
+        email,
+        password,
+      });
+    }
 
-      if (state === "Sign Up") {
-        const { data } = await axios.post(backendUrl + "/api/auth/register", {
-          name,
-          email,
-          password,
-        });
-        
-
-        if (data.success) {
-          setIsLoggedin(true);
-          getUserData();
-          navigate("/");
-        } else {
-          toast.error(data.message);
-        }
-      } else {
-        const { data } = await axios.post(backendUrl + "/api/auth/login", {
-          email,
-          password,
-        });
-        if (data.success) {
-          setIsLoggedin(true);
-          getUserData();
-          navigate("/");
-        } else {
-          toast.error(data.message);
-        }
-      }
-    } catch (error) {
+    if (response.data.success) {
+      setIsLoggedin(true);
+      getUserData();
+      navigate("/");
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    if (error.response) {
+      // The server responded with an error status (like 400)
+      toast.error(error.response.data.message || "Something went wrong");
+    } else {
+      // Network error or other issue
       toast.error(error.message);
     }
-  };
+  }
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen auth-gradient px-4">
