@@ -5,6 +5,9 @@ import cookieParser from 'cookie-parser';
 import connectDB from './config/mongodb.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
+import oauthRouter from './routes/oauthRouter.js';
+import session from 'express-session';
+import passport from './config/passport.js';
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -12,13 +15,24 @@ const PORT = process.env.PORT || 8000;
 // Connect to MongoDB
 connectDB();
 
-// Environment-based CORS configuration
-const isProduction = process.env.NODE_ENV === 'production';
-
+// CORS Configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true
 }));
+
+// Session Middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+  })
+);
 
 // Middlewares
 app.use(express.json());
@@ -26,6 +40,10 @@ app.use(cookieParser());
 
 // Explicitly handle OPTIONS requests for preflight
 app.options('*', cors());
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Test route
 app.get('/', (req, res) => {
@@ -35,6 +53,17 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/auth', oauthRouter);
+
+// Logout Route
+app.get('/api/auth/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) { 
+      return res.status(500).json({ success: false, message: 'Logout failed' }); 
+    }
+    res.json({ success: true, message: 'Logged out successfully' });
+  });
+});
 
 // Error handling
 app.use((err, req, res, next) => {

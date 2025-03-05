@@ -11,36 +11,23 @@ export const AppContextProvider = (props) => {
 
     axios.defaults.withCredentials = true;
 
-    const checkAuth = async () => {
-        try {
-            const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`, {
-                withCredentials: true
-                
-            });
-            if (data.success) {
-                setIsLoggedin(true);
-                getUserData();
-            }
-        } catch (error) {
-            toast.error(error.message);
-        }
-    };
-
     const getUserData = async () => {
         try {
             const { data } = await axios.get(`${backendUrl}/api/user/data`, {
                 withCredentials: true
             });
-            if (data.success) setUserData(data.userData);
-            else toast.error(data.message);
+            if (data.success) {
+                setUserData(data.userData);
+                return data.userData;
+            }
+            toast.error(data.message);
+            return null;
         } catch (error) {
             toast.error(error.message);
+            return null;
         }
     };
 
-    useEffect(() => {
-        checkAuth();
-    }, []);
 
     return (
         <AppContent.Provider value={{ backendUrl, isLoggedin, setIsLoggedin, userData, setUserData, getUserData }}>

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 import userModel from "../models/userModel.js";
 import transporter from "../config/nodemailer.js";
-import {EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE} from "../config/emailTemplates.js";
+import {WELCOME_EMAIL_TEMPLATE, EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE} from "../config/emailTemplates.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -43,12 +43,20 @@ export const register = async (req, res) => {
       from: process.env.SENDER_EMAIL,
       to: email,
       subject: "Welcome to MyAuth App",
-      text: `Hello, ${name}! You have successfully registered on MyAuth App. Your login credentials are: \nEmail: ${email} \nPassword: ${password}`,
+      html: WELCOME_EMAIL_TEMPLATE.replace("{{name}}", name).replace("{{welcome_link}}", process.env.FRONTEND_URL)
     };
 
     await transporter.sendMail(mailOptions);
 
-    return res.json({ success: true, message: "User created successfully" });
+    return res.json({ 
+      success: true, 
+      message: "User created successfully",
+      user: {
+        name: newUser.name,
+        email: newUser.email,
+        isAccountVerified: newUser.isAccountVerified
+      }
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -87,7 +95,15 @@ export const login = async (req, res) => {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     });
 
-    return res.json({ success: true, message: "Login success" });
+    return res.json({ 
+      success: true, 
+      message: "Login success",
+      user: {
+        name: user.name,
+        email: user.email,
+        isAccountVerified: user.isAccountVerified
+      }
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -127,7 +143,6 @@ export const sendVerifyOtp = async (req, res) => {
       from: process.env.SENDER_EMAIL,
       to: user.email,
       subject: "Verify your MyAuth App account",
-      // text: `Hello, \n\nPlease verify your MyAuth App account by entering the following OTP: ${otp}`,
       html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
     };
     await transporter.sendMail(mailOption);
@@ -207,7 +222,6 @@ export const sendPasswordResetOTP = async (req, res) => {
       from: process.env.SENDER_EMAIL,
         to: user.email,
         subject: "Reset your MyAuth App password",
-       // text: `Hello, \n\nPlease reset your MyAuth App password by entering the following OTP: ${otp}`,
         html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
     };
 
