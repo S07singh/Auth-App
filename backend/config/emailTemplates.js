@@ -23,8 +23,10 @@ export const WELCOME_EMAIL_TEMPLATE = `
     .container {
       width: 100%;
       max-width: 500px;
-      margin: 70px 0px;
+      margin: 70px auto;
       background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .main-content {
@@ -32,26 +34,29 @@ export const WELCOME_EMAIL_TEMPLATE = `
       color: #000000;
     }
 
+    .button-container {
+      text-align: center;
+      padding: 16px 0;
+    }
+
     .button {
-      width: 100%;
+      display: inline-block;
       background: #22D172;
       text-decoration: none;
-      display: inline-block;
-      padding: 10px 0;
+      padding: 12px 20px;
       color: #fff;
       font-size: 14px;
-      text-align: center;
       font-weight: bold;
       border-radius: 7px;
     }
 
     @media only screen and (max-width: 480px) {
       .container {
-        width: 80% !important;
+        width: 90% !important;
       }
 
       .button {
-        width: 50% !important;
+        width: 60% !important;
       }
     }
   </style>
@@ -62,7 +67,7 @@ export const WELCOME_EMAIL_TEMPLATE = `
     <tbody>
       <tr>
         <td valign="top" align="center">
-          <table class="container" width="600" cellspacing="0" cellpadding="0" border="0">
+          <table class="container" width="500" cellspacing="0" cellpadding="0" border="0">
             <tbody>
               <tr>
                 <td class="main-content">
@@ -84,17 +89,19 @@ export const WELCOME_EMAIL_TEMPLATE = `
                         </td>
                       </tr>
                       <tr>
-                        <td style="padding: 0 0 24px;">
+                        <td class="button-container">
                           <a href="{{welcome_link}}" class="button">Get Started</a>
                         </td>
                       </tr>
                       <tr>
-                        <td style="padding: 0 0 10px; font-size: 14px; line-height: 150%;">
-                          Your login credentials are: \nEmail: {{email}} \nPassword: {{password}}
+                        <td style="padding: 20px 0 10px; font-size: 14px; line-height: 150%;">
+                          <strong>Your login credentials are:</strong><br>
+                          📧 Email: {{email}} <br>
+                          🔑 Password: {{password}}
                         </td>
                       </tr>
                       <tr>
-                        <td style="padding: 0 0 10px; font-size: 14px; line-height: 150%;">
+                        <td style="padding: 20px 0 10px; font-size: 14px; line-height: 150%;">
                           If you have any questions, feel free to reach out to our support team.
                         </td>
                       </tr>
@@ -110,7 +117,8 @@ export const WELCOME_EMAIL_TEMPLATE = `
   </table>
 </body>
 </html>
-`
+`;
+
 
 export const EMAIL_VERIFY_TEMPLATE = `
 <!DOCTYPE html>
