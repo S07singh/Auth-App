@@ -55,16 +55,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/auth', oauthRouter);
 
-// Logout Route
-app.get('/api/auth/logout', (req, res) => {
-  req.logout((err) => {
-    if (err) { 
-      return res.status(500).json({ success: false, message: 'Logout failed' }); 
-    }
-    res.json({ success: true, message: 'Logged out successfully' });
-  });
-});
-
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
